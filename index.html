@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shavkatov 009 | Erkaklar Kiyimlari</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="shavkatov009.png">
+    <style>
+        /* --- Umumiy O'zgaruvchilar (Variables) --- */
+        :root {
+            /* Kunduzgi Rejim */
+            --primary-color: #1a2a3a;
+            --secondary-bg: #f9f9f9;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --overlay-bg: rgba(0,0,0,0.5);
+            --input-bg: #ffffff;
+            --hero-overlay: rgba(26, 42, 58, 0.7);
+            --transition: all 0.3s ease;
+            --accent-color: #c5a059;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* Tungi Rejim */
+        [data-theme="dark"] {
+            --primary-color: #c5a059; 
+            --secondary-bg: #121212;
+            --text-dark: #f0f0f0;
+            --text-light: #aaaaaa;
+            --white: #1e1e1e;
+            --border-color: #333333;
+            --shadow: 0 4px 15px rgba(0,0,0,0.5);
+            --overlay-bg: rgba(0,0,0,0.8);
+            --input-bg: #2c2c2c;
+            --hero-overlay: rgba(0, 0, 0, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--white);
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--text-dark); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- Til va Mavzu --- */
+        .header-controls { display: flex; align-items: center; gap: 12px; }
+        .lang-wrapper { position: relative; display: inline-block; }
+        #langSelect {
+            appearance: none; -webkit-appearance: none;
+            background-color: var(--primary-color); color: #fff; border: none;
+            padding: 6px 30px 6px 15px; border-radius: 20px; font-family: 'Inter', sans-serif;
+            font-weight: 700; font-size: 0.85rem; cursor: pointer; outline: none;
+            transition: var(--transition); min-width: 90px; text-align: center;
+        }
+        #langSelect:hover { opacity: 0.9; transform: translateY(-1px); }
+        .lang-arrow {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            color: #fff; font-size: 0.7rem; pointer-events: none;
+        }
+        #themeToggle {
+            background: none; border: 1px solid var(--border-color); width: 36px; height: 36px;
+            border-radius: 50%; font-size: 1rem; color: var(--text-dark); cursor: pointer;
+            transition: var(--transition); display: flex; align-items: center; justify-content: center;
+        }
+        #themeToggle:hover { background-color: var(--secondary-bg); color: var(--primary-color); }
+
+        /* --- Header --- */
+        header { background-color: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; padding: 0.8rem 0; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-color); font-family: 'Playfair Display', serif; z-index: 1002; color: #d0d021fd;font-size: 47px;}
+        .logo span { color: var(--primary-color); color: #d0d021fd;}
+        .nav-links { display: flex; gap: 1.8rem; }
+        .nav-links a { font-weight: 600; font-size: 1rem; position: relative; color: var(--text-dark); }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--primary-color); transition: var(--transition); }
+        .nav-links a:hover { color: var(--primary-color); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-icons { display: flex; gap: 1.2rem; align-items: center; z-index: 1002; }
+        .nav-icons i { font-size: 1.1rem; cursor: pointer; color: var(--text-dark); }
+
+        /* --- Qidiruv (O'zgartirildi) --- */
+        .search-wrapper { position: relative; }
+        .search-trigger { 
+            font-size: 1.4rem; cursor: pointer; color: var(--text-light); 
+            transition: var(--transition); 
+        }
+        .search-trigger:hover { color: var(--primary-color); }
+        
+        /* Input yashirilgan, bosilganda paydo bo'ladi */
+        .search-box-input {
+            position: absolute; top: 50%; left: 0; transform: translateY(-50%);
+            padding: 8px 30px 8px 15px; border: 1px solid var(--border-color); border-radius: 20px; 
+            outline: none; width: 150px; font-family: 'Inter', sans-serif; font-size: 0.9rem; 
+            background-color: var(--input-bg); color: var(--text-dark);
+            display: none; /* Dastlab yashirin */
+            z-index: 100;
+        }
+        .search-box-input.active { display: block; }
+
+        .cart-icon { position: relative; cursor: pointer; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background-color: var(--primary-color); color: #fff; font-size: 0.65rem; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark); }
+
+        /* --- Hero --- */
+        .hero {
+            height: 70vh; background: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url(./main.png) no-repeat center center/cover;
+            display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero-content h1 { font-size: 3.5rem; color: #fff; margin-bottom: 1.2rem; text-shadow: 2px 2px 4px rgba(141, 133, 133, 0); }
+        .hero-btn { padding: 12px 30px; background-color: var(--primary-color); border: none; color: #fff; font-size: 1rem; text-transform: uppercase; cursor: pointer; border-radius: 4px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-top: 1rem; }
+
+        /* --- Features --- */
+        .features { padding: 3rem 0; background-color: var(--secondary-bg); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        .feature-card { text-align: center; padding: 1.5rem; background: var(--white); border-radius: 8px; box-shadow: var(--shadow); }
+        .feature-card i { font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem; }
+        .feature-card h3 { color: var(--text-dark); font-size: 1.1rem; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 700;}
+        .feature-card p { color: var(--text-light); font-size: 0.9rem; }
+
+        /* --- Kategoriyalar --- */
+        .categories { padding: 4rem 0; background-color: var(--white); }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; }
+        .category-item { position: relative; height: 160px; overflow: hidden; border-radius: 6px; cursor: pointer; display: block; color: inherit; text-decoration: none; }
+        .category-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .category-item:hover img { transform: scale(1.1); }
+        .category-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
+        .category-overlay h3 { color: #fff; font-size: 0.95rem; font-weight: 700; border-bottom: 2px solid var(--primary-color); padding-bottom: 2px;}
+
+        /* --- Products --- */
+        .products { padding: 4rem 0; background-color: var(--secondary-bg); }
+        .filter-buttons { display: flex; justify-content: center; gap: 0.8rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .filter-btn { background: var(--white); border: 1px solid var(--border-color); color: var(--text-dark); padding: 8px 20px; border-radius: 4px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow); }
+        .filter-btn:hover, .filter-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); transform: translateY(-2px); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+        .product-card { background: var(--white); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); display: flex; flex-direction: column; }
+        .product-card.hide { display: none; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-image { position: relative; height: 240px; overflow: hidden; background-color: #eee; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .product-colors { display: flex; gap: 10px; margin-bottom: 10px; padding: 5px 0; border-bottom: 1px solid #eee; }
+        .color-option { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: var(--transition); }
+        .color-option:hover { transform: scale(1.1); }
+        .color-option.active { border-color: var(--primary-color); transform: scale(1.1); }
+
+        .product-actions { display: flex; flex-direction: column; gap: 0; width: 100%; }
+        .buy-now-btn { width: 100%; background: linear-gradient(45deg, var(--accent-color), #d4af37); color: #fff; text-align: center; padding: 12px; font-weight: 800; transition: var(--transition); cursor: pointer; border: none; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(197, 160, 55, 0.3); }
+        .buy-now-btn:hover { box-shadow: 0 6px 20px rgba(197, 160, 55, 0.5); transform: translateY(-2px); }
+        .add-to-cart { width: 100%; background-color: var(--primary-color); color: #fff; text-align: center; padding: 10px; font-weight: 700; transition: var(--transition); cursor: pointer; border: none; border-top: 1px solid var(--border-color); font-size: 0.95rem; }
+        .add-to-cart:hover { opacity: 0.9; }
+
+        .product-info { padding: 1.2rem; }
+        .product-category { font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; font-weight: 700; }
+        .product-title { font-size: 1rem; margin: 0.5rem 0; font-weight: 700; color: var(--text-dark); }
+        .product-price { color: var(--accent-color); font-weight: 700; font-size: 1.1rem; }
+
+        /* --- About --- */
+        .about { padding: 5rem 0; background-color: var(--white); }
+        .about-container { display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; }
+        .about-image, .about-text { flex: 1; min-width: 300px; }
+        .about-image img { border-radius: 8px; box-shadow: var(--shadow); }
+        .about-text h2 { font-size: 2.2rem; margin-bottom: 1.2rem; color: var(--text-dark); }
+        .about-text p { color: var(--text-light); margin-bottom: 1.2rem; font-size: 1rem; }
+        .stats { display: flex; gap: 2rem; }
+
+        /* --- Footer --- */
+        footer { background-color: #111; color: #ddd; padding: 3rem 0 1rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .footer-col h4 { color: #fff; margin-bottom: 1.2rem; font-size: 1.2rem; }
+        .footer-col ul li a { color: #aaa; display: block; margin-bottom: 0.6rem; font-size: 1rem; }
+        .footer-col ul li a:hover { color: var(--primary-color); }
+        .social-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+        .social-links a { width: 35px; height: 35px; background: #333; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: var(--transition); }
+        .social-links a:hover { background: var(--primary-color); }
+        
+        /* Email link stili */
+        .email-link {
+            width: auto; height: auto; padding: 8px 15px; background: transparent;
+            border: 1px solid var(--primary-color); color: #fff; border-radius: 4px;
+            font-weight: 700; font-size: 0.9rem; display: flex; align-items: center;
+            transition: all 0.3s; text-decoration: none; font-family: 'Inter', sans-serif;
+        }
+        .email-link:hover {
+            background: var(--primary-color); border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom { border-top: 1px solid #333; padding-top: 1.5rem; text-align: center; color: #777; font-size: 1rem; }
+
+        /* --- Cart Sidebar --- */
+        .cart-sidebar { position: fixed; top: 0; right: -350px; width: 320px; height: 100%; background: var(--white); box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.4s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.active { right: 0; }
+        .cart-header { padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--primary-color); color: #fff; }
+        .close-cart { cursor: pointer; font-size: 1.4rem; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 15px; }
+        .cart-item { display: flex; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .cart-item-info { flex: 1; }
+        .cart-item-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; color: var(--text-dark); }
+        .cart-item-price { color: var(--primary-color); font-weight: 700; font-size: 0.95rem; }
+        .remove-item { color: #ff4d4d; font-size: 0.85rem; cursor: pointer; margin-top: 4px; display: inline-block; }
+        .cart-footer { padding: 15px; border-top: 1px solid var(--border-color); background: var(--secondary-bg); }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: var(--text-dark); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--overlay-bg); z-index: 1500; display: none; }
+        .overlay.active { display: block; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background-color: var(--white); flex-direction: column; justify-content: center; align-items: center; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.4s ease; z-index: 1001; }
+            .nav-links.active { right: 0; }
+            .nav-links li { margin: 15px 0; }
+            .nav-links a { font-size: 1.2rem; font-weight: 600; color: var(--text-dark); }
+            .hero-content h1 { font-size: 2.2rem; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3 data-i18n="cart_title">Savat</h3>
+            <div class="close-cart" id="closeCart">&times;</div>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <!-- Savat bo'sh msg o'rniga o'zgacha: JS orqali to'ldiriladi -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span data-i18n="total">Jami:</span>
+                <span id="cartTotal">0 so'm</span>
+            </div>
+            <button class="btn" style="width: 100%;" onclick="alert('Buyurtma qabul qilindi!')" data-i18n="order_btn">Buyurtma berish</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#hero" class="logo">Shavkatov <span>009</span></a>
+            
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#hero" data-i18n="nav_home">Bosh sahifa</a></li>
+                    <li><a href="#categories" data-i18n="nav_cat">Kategoriyalar</a></li>
+                    <li><a href="#products" data-i18n="nav_prod">Mahsulotlar</a></li>
+                    <li><a href="#about" data-i18n="nav_about">Biz haqimizda</a></li>
+                    <li><a href="#contact" data-i18n="nav_contact">Aloqa</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-icons">
+                <div class="header-controls">
+                    <div class="lang-wrapper">
+                        <select id="langSelect" onchange="changeLanguage(this.value)">
+                            <option value="uz">O'zbek</option>
+                            <option value="oz">Ўзбек</option>
+                            <option value="ru">Русский</option>
+                        </select>
+                        <i class="fas fa-chevron-down lang-arrow"></i>
+                    </div>
+                    <button id="themeToggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+
+                <!-- Qidiruv (Yangi) -->
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-trigger" id="searchTrigger"></i>
+                    <input type="text" id="searchInput" class="search-box-input" placeholder="Qidirush...">
+                </div>
+                
+                <i class="far fa-user"></i>
+                <div class="cart-icon" id="cartIcon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 data-i18n="hero_title">Zamonaviy Erkaklar Modasi</h1>
+            <button class="hero-btn" onclick="document.getElementById('products').scrollIntoView()" data-i18n="hero_btn">Xarid Qilish</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-gem"></i>
+                    <h3 data-i18n="feat_1_title">Yuqori Sifat</h3>
+                    <p data-i18n="feat_1_desc">Faqat import va sifatli mahsulotlar.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h3 data-i18n="feat_2_title">Tez Yetkazib Berish</h3>
+                    <p data-i18n="feat_2_desc">Butun O'zbekiston bo'ylab 1-2 kunda.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tags"></i>
+                    <h3 data-i18n="feat_3_title">Arzon Narxlar</h3>
+                    <p data-i18n="feat_3_desc">Hamyonbop narxlarda, chegirmalar mavjud.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2 class="section-title" style="text-align:center; margin-bottom:0.5rem; font-size:2.5rem;" data-i18n="cat_title">Kategoriyalar</h2>
+            <p class="section-subtitle" style="text-align:center; color:var(--text-light); margin-bottom:2rem;" data-i18n="cat_subtitle">O'zingizga mos bo'limni tanlang</p>
+            
+            <div class="category-grid">
+                <a href="#products" class="category-item">
+                    <img src="./suit.png" alt="Kostyumlar">
+                    <div class="category-overlay"><h3 data-i18n="cat_suits">Kostyumlar</h3></div>
+                </a>
+                <a href="#products" class="category-item">
+                    <img src="./shirt.png" alt="Ko'ylaklar">
+                    <div class="category-overlay"><h3 data-i18n="cat_shirts">Ko'ylaklar</h3></div>
+                </a>
+                <a href="#products" class="category-item">
+                    <img src="./jeans.png" alt="Shimlar">
+                    <div class="category-overlay"><h3 data-i18n="cat_pants">Shimlar</h3></div>
+                </a>
+                <!-- Bosh Kiyim (Yangi) -->
+                <a href="#products" class="category-item">
+                    <img src="./cap.png" alt="Bosh kiyim">
+                    <div class="category-overlay"><h3 data-i18n="cat_underwear">Bosh kiyim</h3></div>
+                </a>
+                <a href="#products" class="category-item">
+                    <img src="./coat.png" alt="Paltolar">
+                    <div class="category-overlay"><h3 data-i18n="cat_jackets">Paltolar</h3></div>
+                </a>
+                <!-- Soatlar (Triko o'rnini egalladi) -->
+                <a href="#products" class="category-item">
+                    <img src="./watches.png" alt="Soatlar">
+                    <div class="category-overlay"><h3 data-i18n="cat_shoes">Soatlar</h3></div>
+                </a>
+                <a href="#products" class="category-item">
+                    <img src="./shoes.png" alt="Oyoq kiyimlar">
+                    <div class="category-overlay"><h3 data-i18n="cat_acc">Oyoq kiyimlar</h3></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title" style="text-align:center; margin-bottom:0.5rem; font-size:2.5rem;" data-i18n="prod_title">Mahsulotlar</h2>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterSelection('all')" data-i18n="filter_all">Barchasi</button>
+                <button class="filter-btn" onclick="filterSelection('suits')" data-i18n="cat_suits">Kostyumlar</button>
+                <button class="filter-btn" onclick="filterSelection('shirts')" data-i18n="cat_shirts">Ko'ylaklar</button>
+                <button class="filter-btn" onclick="filterSelection('pants')" data-i18n="cat_pants">Shimlar</button>
+                <!-- Bosh Kiyim Tugma -->
+                <button class="filter-btn" onclick="filterSelection('underwear')" data-i18n="cat_underwear">Bosh kiyim</button>
+                <!-- Soatlar Tugma (Triko o'rnini egalladi) -->
+                <button class="filter-btn" onclick="filterSelection('shoes')" data-i18n="cat_shoes">Soatlar</button>
+            </div>
+
+            <div class="product-grid">
+                <!-- KOSTYUMLAR -->
+                <div class="product-card" data-category="suits">
+                    <div class="product-image">
+                        <img src="./elite.png" alt="Klassik Kostyum">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_suits">Kostyumlar</span>
+                        <h3 class="product-title">Elite To'q Ko'k Kostyum</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #000000;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #3a4a5a;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #7d8c95;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #e0e0e0;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">2 100 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Elite To\'q Ko\'k Kostyum')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(1, 'Elite To\'q Ko\'k Kostyum', 2100000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="suits">
+                    <div class="product-image">
+                        <img src="./kumush.png" alt="Kumush Kostyum">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_suits">Kostyumlar</span>
+                        <h3 class="product-title">Zamonaviy Kumush Kostyum</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #000000;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #a8a8a8;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #555555;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #d3d3d3;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">1 850 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Zamonaviy Kumush Kostyum')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(2, 'Zamonaviy Kumush Kostyum', 1850000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <!-- SHIMLAR -->
+                <div class="product-card" data-category="pants">
+                    <div class="product-image">
+                        <img src="./klassikshim.png" alt="Klassik Shim">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_pants">Shimlar</span>
+                        <h3 class="product-title">Klassik Qora Shim</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #000000;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #1a2a3a;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #888888;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">350 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Klassik Qora Shim')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(3, 'Klassik Qora Shim', 350000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="pants">
+                    <div class="product-image">
+                        <img src="./bejshim.png" alt="Bej Shim">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_pants">Shimlar</span>
+                        <h3 class="product-title">Bej Rangdagi Shim</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #d2b48c;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #8d8060;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #555; border: 1px solid #eee;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">400 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Bej Rangdagi Shim')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(4, 'Bej Rangdagi Shim', 400000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <!-- KO'YLAKLAR -->
+                <div class="product-card" data-category="shirts">
+                    <div class="product-image">
+                        <img src="./oqkoylak.png" alt="Oq Ko'ylak">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_shirts">Ko'ylaklar</span>
+                        <h3 class="product-title">Oq Rasmiy Ko'ylak</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #fff; border: 1px solid #ddd;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #f0f0f0;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #aaccff;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">220 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Oq Rasmiy Ko\'ylak')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(5, 'Oq Rasmiy Ko\'ylak', 220000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="shirts">
+                    <div class="product-image">
+                        <img src="kokkoylak.png" alt="Ko'k Ko'ylak">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_shirts">Ko'ylaklar</span>
+                        <h3 class="product-title">Ko'k Hujumli Ko'ylak</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #1a4c8c;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #1a4c8caa;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #f4f4f4;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">180 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Ko\'k Hujumli Ko\'ylak')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(6, 'Ko\'k Hujumli Ko\'ylak', 180000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <!-- Bosh Kiyim (Yangi) -->
+                <div class="product-card" data-category="underwear">
+                    <div class="product-image">
+                        <img src="./kepka.png" alt="Bosh Kiyim Seti">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_underwear">Bosh kiyim</span>
+                        <h3 class="product-title">Kepka</h3>
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #fff; border: 1px solid #ddd;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #000;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #333;" onclick="selectColor(this)"></span>
+                        </div>
+                        <span class="product-price">110 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Paxta Bosh Kiyim (3 dona)')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(11, 'Paxta Bosh Kiyim (3 dona)', 110000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="underwear">
+                    <div class="product-image">
+                        <img src="./watch.png" alt="Klassik Truslar">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_underwear">Bosh kiyim</span>
+                        <h3 class="product-title">Soat</h3>
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #000;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #444;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #eee;" onclick="selectColor(this)"></span>
+                        </div>
+                        <span class="product-price">80 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Klassik Qora Truslar')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(12, 'Klassik Qora Truslar', 80000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <!-- Soatlar (Yangi) -->
+                <div class="product-card" data-category="shoes">
+                    <div class="product-image">
+                        <img src="./sportshoes.png" alt="Sport Poyabzalar">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_shoes">Soatlar</span>
+                        <h3 class="product-title">Yuqori Sport Poyabzalar</h3>
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #ff4d4d;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #333;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #fff; border:1px solid #ddd;" onclick="selectColor(this)"></span>
+                        </div>
+                        <span class="product-price">250 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Yuqori Sport Poyabzalar')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(13, 'Yuqori Sport Poyabzalar', 250000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="shoes">
+                    <div class="product-image">
+                        <img src="./loropiano.png" alt="Klassik Tufli">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_shoes">Soatlar</span>
+                        <h3 class="product-title">Teri Klassik Tufli</h3>
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #5d4037;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #8b4513;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #000;" onclick="selectColor(this)"></span>
+                        </div>
+                        <span class="product-price">300 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Teri Klassik Tufli')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(14, 'Teri Klassik Tufli', 300000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                 <!-- Jeans -->
+                 <div class="product-card" data-category="pants">
+                    <div class="product-image">
+                        <img src="./jensi.png" alt="Jeans">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_pants">Shimlar</span>
+                        <h3 class="product-title">Ko'k Jeans Shim</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #34495e;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #1a252f;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #546e7a;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">320 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Ko\'k Jeans Shim')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(9, 'Ko\'k Jeans Shim', 320000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+                 <!-- Kletka -->
+                 <div class="product-card" data-category="shirts">
+                    <div class="product-image">
+                        <img src="./kletka.png" alt="Kletka">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category" data-i18n="cat_shirts">Ko'ylaklar</span>
+                        <h3 class="product-title">Kletka Rasmdagi Ko'ylak</h3>
+                        
+                        <div class="product-colors">
+                            <span class="color-option active" style="background-color: #d35400;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #e67e22;" onclick="selectColor(this)"></span>
+                            <span class="color-option" style="background-color: #2c3e50;" onclick="selectColor(this)"></span>
+                        </div>
+
+                        <span class="product-price">250 000 so'm</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="buy-now-btn" onclick="buyNow('Kletka Rasmdagi Ko\'ylak')" data-i18n="buy_btn">Buyurtma berish</button>
+                        <button class="add-to-cart" onclick="addToCart(10, 'Kletka Rasmdagi Ko\'ylak', 250000)" data-i18n="add_btn">Savatga Qo'shish</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container about-container">
+            <div class="about-image">
+                <img src="./shavkatov009.png" alt="Rasm">
+            </div>
+            <div class="about-text">
+                <h2 data-i18n="about_title">Biz Haqimizda</h2>
+                <p data-i18n="about_p1"><strong>"Shavkatov 009"</strong> — 2023 yildan beri faoliyat yurituvchi zamonaviy erkaklar kiyimlari do'koni.</p>
+                <p data-i18n="about_p2">Bizning vazifamiz — Turkiya, Xitoy va Rossiya kabi mamlakatlardan eng sifatli fabrika mahsulotlarini import qilib, ularni O'zbekiston fuqarolariga hamyonbop narxlarda taqdim etishdir.</p>
+                <p data-i18n="about_p3">Bizning jamoamiz doimo bozor narxlarini kuzatib boradi va eng yaxshi mahsulotlarni tanlab oladi.</p>
+                <div class="stats">
+                    <div class="stat-item"><h4>1+</h4><span data-i18n="stat_exp">Yil Tajriba</span></div>
+                    <div class="stat-item"><h4>50+</h4><span data-i18n="stat_part">Hamkorlar</span></div>
+                    <div class="stat-item"><h4>500+</h4><span data-i18n="stat_prod">Mahsulotlar</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Instagram olib tashlandi, Email qo'shildi) -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#hero" class="logo" style="display:block; margin-bottom:1rem; color:white;">Shavkatov <span>009</span></a>
+                    <p style="font-size: 0.9rem; color:#aaa;" data-i18n="footer_desc">Eng yaxshi erkaklar kiyimlari do'koni. Import mahsulotlari sifati va kafolati.</p>
+                    <div class="social-links" style="margin-top:1rem;">
+                        <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="https://www.instagram.com/shavkatov_009_shop?igsh=M3JxaDgweGtiNTFo"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="nav_menu">Bo'limlar</h4>
+                    <ul>
+                        <li><a href="#hero" data-i18n="nav_home">Bosh sahifa</a></li>
+                        <li><a href="#products" data-i18n="nav_prod">Mahsulotlar</a></li>
+                        <li><a href="#about" data-i18n="nav_about">Biz haqimizda</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="nav_contact">Bog'lanish</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right:10px;"></i> Xorazm viloyati, Hazorasp sh.</li>
+                        <li><i class="fas fa-phone" style="margin-right:10px;"></i> +998 94 999 07 37</li>
+                        <li><i class="fas fa-clock" style="margin-right:10px;"></i> 09:00 - 00:00 (Har kuni)</li>
+                        <li><i class="fab fa-instagram" style="margin-right:10px; display: inline;"><a href="https://www.instagram.com/shavkatov_009_shop?igsh=M3JxaDgweGtiNTFo" style="display: inline;"></i>shavkatov_009_shop</li></a>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2023 Shavkatov 009. Barcha huquqlar himoyalangan.</p></div>
+        </div>
+    </footer>
+
+    <script>
+        // --- TIL TARJIMASI (DICTIONARY) ---
+        const translations = {
+            uz: {
+                nav_home: "Bosh sahifa", nav_cat: "Kategoriyalar", nav_prod: "Mahsulotlar", nav_about: "Biz haqimizda", nav_contact: "Aloqa", nav_menu: "Bo'limlar",
+                cart_title: "Savat", cart_empty: "Savat bo'sh", total: "Jami:", order_btn: "Buyurtma berish",
+                hero_title: "Zamonaviy Erkaklar Modasi", hero_subtitle: "Sifatli import kiyimlar, 100 000 so'mdan boshlab.", hero_btn: "Xarid Qilish",
+                feat_1_title: "Yuqori Sifat", feat_1_desc: "Faqat import va sifatli mahsulotlar.",
+                feat_2_title: "Tez Yetkazib Berish", feat_2_desc: "Butun O'zbekiston bo'ylab 1-2 kunda.",
+                feat_3_title: "Arxon Narxlar", feat_3_desc: "Hamyonbop narxlarda, chegirmalar mavjud.",
+                cat_title: "Kategoriyalar", cat_subtitle: "O'zingizga mos bo'limni tanlang",
+                cat_suits: "Kostyumlar", cat_shirts: "Ko'ylaklar", cat_pants: "Shimlar", cat_jackets: "Paltolar", cat_tshirts: "Trikotaj", cat_acc: "Aksessuarlar",
+                cat_underwear: "Bosh kiyim", cat_shoes: "Soatlar",
+                prod_title: "Mahsulotlar", filter_all: "Barchasi", add_btn: "Savatga Qo'shish", buy_btn: "Buyurtma berish",
+                about_title: "Biz Haqimizda",
+                about_p1: '"Shavkatov 009" — 2023 yildan beri faoliyat yurituvchi zamonaviy erkaklar kiyimlari do\'koni.',
+                about_p2: 'Bizning vazifamiz — Turkiya, Xitoy va Rossiya kabi mamlakatlardan eng sifatli fabrika mahsulotlarini import qilib, ularni O\'zbekiston fuqarolariga hamyonbop narxlarda taqdim etishdir.',
+                about_p3: 'Bizning jamoamiz doimo bozor narxlarini kuzatib boradi va eng yaxshi mahsulotlarni tanlab oladi.',
+                stat_exp: "Yil Tajriba", stat_part: "Hamkorlar", stat_prod: "Mahsulotlar",
+                footer_desc: "Eng yaxshi erkaklar kiyimlari do'koni. Import mahsulotlari sifati va kafolati.",
+                search_ph: "Qidirish..."
+            },
+            oz: { 
+                nav_home: "Бош сахифа", nav_cat: "Категориялар", nav_prod: "Маҳсулотлар", nav_about: "Биз ҳақимизда", nav_contact: "Алоқа", nav_menu: "Бўлимлар",
+                cart_title: "Сават", cart_empty: "Сават бўш", total: "Жами:", order_btn: "Буюртма бериш",
+                hero_title: "Замонавий Эркаклар Модаси", hero_subtitle: "Сифатли импорт кийимлар, 100 000 сўмдан бошлаб.", hero_btn: "Харид Қилиш",
+                feat_1_title: "Юқори Сифат", feat_1_desc: "Фақат импорт ва сифатли маҳсулотлар.",
+                feat_2_title: "Тез Етказиб Бериш", feat_2_desc: "Бутун Ўзбекистон бўйлаб 1-2 кунда.",
+                feat_3_title: "Арзон Нарҳлар", feat_3_desc: "Ҳамёнбоп нарҳларда, чегирмалар мавжуд.",
+                cat_title: "Категориялар", cat_subtitle: "Ўзингизга моск бўлимни танланг",
+                cat_suits: "Костюмлар", cat_shirts: "Кўйлаклар", cat_pants: "Шимлар", cat_jackets: "Палтолар", cat_tshirts: "Трикотаж", cat_acc: "Аксессуарлар",
+                cat_underwear: "Бош кийим", cat_shoes: "Пойабзалар",
+                prod_title: "Маҳсулотлар", filter_all: "Барчаси", add_btn: "Саватга Қўшиш", buy_btn: "Буюртма бериш",
+                about_title: "Биз Ҳақимизда",
+                about_p1: '"Shavkatov 009" — 2023 йилдан бери фаолият юритувчи замонавий эркаклар кийимлари дўкони.',
+                about_p2: 'Бизнинг вазифамиз — Туркия, Хитой ва Россия каби мамлакатлардан энг сифатли фабрика маҳсулотларини импорт қилиб, уларни Ўзбекистон фуқароларига ҳамёнбоп нарҳларда тақдим этишдир.',
+                about_p3: 'Бизнинг жамоамиз доимо бозор нарҳларини кузатиб боради ва энг яхши маҳсулотларни танлаб олади.',
+                stat_exp: "Йил Тажриба", stat_part: "Ҳамкорлар", stat_prod: "Маҳсулотлар",
+                footer_desc: "Энг яхши эркаклар кийимлари дўкони. Импорт маҳсулотлари сифати ва кафолати.",
+                search_ph: "Қидириш..."
+            },
+            ru: { 
+                nav_home: "Главная", nav_cat: "Категории", nav_prod: "Товары", nav_about: "О нас", nav_contact: "Контакты", nav_menu: "Разделы",
+                cart_title: "Корзина", cart_empty: "Корзина пуста", total: "Итого:", order_btn: "Оформить заказ",
+                hero_title: "Современная мужская мода", hero_subtitle: "Качественная импортная одежда от 100 000 сум.", hero_btn: "Купить",
+                feat_1_title: "Высокое качество", feat_1_desc: "Только импортные и качественные товары.",
+                feat_2_title: "Быстрая доставка", feat_2_desc: "По всему Узбекистану за 1-2 дня.",
+                feat_3_title: "Доступные цены", feat_3_desc: "Доступные цены, есть скидки.",
+                cat_title: "Категории", cat_subtitle: "Выберите подходящий раздел",
+                cat_suits: "Костюмы", cat_shirts: "Рубашки", cat_pants: "Брюки", cat_jackets: "Пальто", cat_tshirts: "Трикотаж", cat_acc: "Аксессуары",
+                cat_underwear: "Белье", cat_shoes: "Обувь",
+                prod_title: "Товары", filter_all: "Все", add_btn: "В корзину", buy_btn: "Купить",
+                about_title: "О нас",
+                about_p1: '"Shavkatov 009" — современный магазин мужской одежды, действующий с 2023 года.',
+                about_p2: 'Наша задача — импортировать качественные фабричные товары из Турции, Китая и России и предоставлять их жителям Узбекистана по доступным ценам.',
+                about_p3: 'Наша команда всегда следит за рыночными ценами и отбирает лучшие товары.',
+                stat_exp: "Год опыта", stat_part: "Партнеры", stat_prod: "Товары",
+                footer_desc: "Лучший магазин мужской одежды. Качество и гарантия импортных товаров.",
+                search_ph: "Поиск..."
+            }
+        };
+
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+            const searchInput = document.getElementById('searchInput');
+            if(searchInput) searchInput.placeholder = translations[lang].search_ph;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('#themeToggle i');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+
+        // --- Rang tanlash ---
+        function selectColor(element) {
+            const siblings = element.parentElement.children;
+            for (let i = 0; i < siblings.length; i++) {
+                siblings[i].classList.remove('active');
+            }
+            element.classList.add('active');
+        }
+
+        // --- QIDIRUV JS (Yangi) ---
+        const searchTrigger = document.getElementById('searchTrigger');
+        const searchInput = document.getElementById('searchInput');
+
+        searchTrigger.addEventListener('click', () => {
+            searchInput.classList.toggle('active');
+            if(searchInput.classList.contains('active')) {
+                searchInput.focus();
+            }
+        });
+
+        // --- QOLGAN JS LOGIKA ---
+        let cart = [];
+        
+        // Savatga qo'shish uchun tavsiyalar (Rekommended Products)
+        const recommendedProducts = [
+            { id: 1, name: "Elite To'q Ko'k Kostyum", price: 2100000, img: "https://picsum.photos/seed/suit1/100/100" },
+            { id: 5, name: "Oq Rasmiy Ko'ylak", price: 220000, img: "https://picsum.photos/seed/shirt1/100/100" },
+            { id: 11, name: "Paxta Bosh Kiyim (3 dona)", price: 110000, img: "https://picsum.photos/seed/underwear1/100/100" }
+        ];
+
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('overlay');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartTotalElement = document.getElementById('cartTotal');
+        const cartCountElement = document.getElementById('cartCount');
+        const cartIcon = document.getElementById('cartIcon');
+        const closeCart = document.getElementById('closeCart');
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = menuToggle.querySelector('i');
+        const navItems = document.querySelectorAll('.nav-links a');
+
+        function buyNow(productName) {
+            alert(`"${productName}" uchun tezkor buyurtma berish oynasi ochiladi.`);
+        }
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if(navLinks.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    menuIcon.classList.remove('fa-times');
+                    menuIcon.classList.add('fa-bars');
+                }
+            });
+        });
+
+        function toggleCart() {
+            cartSidebar.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+        }
+        cartIcon.addEventListener('click', toggleCart);
+        closeCart.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
+
+        function addToCart(id, name, price, img) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ id, name, price, img, qty: 1 });
+            }
+            updateCart();
+            if (!cartSidebar.classList.contains('active')) {
+                toggleCart();
+            }
+        }
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+        function updateCart() {
+            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+            cartCountElement.innerText = totalQty;
+            const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            cartTotalElement.innerText = new Intl.NumberFormat('uz-UZ').format(totalPrice) + " so'm";
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                const lang = document.getElementById('langSelect').value;
+                let htmlContent = `<h4 style="margin-bottom:1.5rem; color:#888; text-align:center; font-size:0.95rem; font-weight:600; text-transform:uppercase;">Tavsiya etilgan</h4>`;
+                recommendedProducts.forEach(prod => {
+                    htmlContent += `
+                        <div class="cart-rec-card" style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px dashed #e0e0e0; padding-bottom:10px;">
+                            <img src="${prod.img}" style="width:55px; height:55px; object-fit:cover; border-radius:4px; border:1px solid #eee;">
+                            <div class="rec-info" style="flex:1;">
+                                <div style="font-size:0.85rem; font-weight:600; margin-bottom:5px; color:var(--text-dark); line-height:1.2;">${prod.name}</div>
+                                <div style="color:var(--accent-color); font-size:0.9rem; font-weight:700;">${new Intl.NumberFormat('uz-UZ').format(prod.price)}</div>
+                                <button style="width:100%; margin-top:8px; padding:6px; background:var(--primary-color); color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:0.8rem; font-weight:600; transition:0.2s;" onclick="addToCart(${prod.id}, '${prod.name}', ${prod.price}, '${prod.img}')" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Savatga Qo'shish</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                cartItemsContainer.innerHTML = htmlContent;
+                return;
+            }
+            
+            cart.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.classList.add('cart-item');
+                itemEl.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">${new Intl.NumberFormat('uz-UZ').format(item.price)} so'm x ${item.qty}</div>
+                        <div class="remove-item" onclick="removeFromCart(${item.id})">O'chirish</div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemEl);
+            });
+        }
+
+        function filterSelection(category) {
+            const cards = document.getElementsByClassName("product-card");
+            const btns = document.getElementsByClassName("filter-btn");
+            for (let i = 0; i < btns.length; i++) {
+                btns[i].classList.remove('active');
+                if(btns[i].getAttribute('onclick').includes(category)) {
+                     btns[i].classList.add('active');
+                }
+            }
+            if (category == "all") category = "";
+            for (let i = 0; i < cards.length; i++) {
+                cards[i].classList.remove("hide");
+                if (cards[i].getAttribute('data-category').indexOf(category) == -1 && category !== "") {
+                    cards[i].classList.add("hide");
+                }
+            }
+        }
+
+        // Qidiruv (Search)
+        searchInput.addEventListener('keyup', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.product-title').innerText.toLowerCase();
+                if(title.includes(term)) {
+                    card.classList.remove('hide');
+                } else {
+                    card.classList.add('hide');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
