@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shavkatov 009 | Erkaklar Kiyimlari</title>
+    <title>Shavkatov 009 | AI Stilist</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
@@ -24,6 +24,8 @@
             --hero-overlay: rgba(26, 42, 58, 0.7);
             --transition: all 0.3s ease;
             --accent-color: #c5a059;
+            --success-color: #27ae60;
+            --tech-color: #00d2ff;
         }
 
         html { scroll-behavior: smooth; }
@@ -94,42 +96,22 @@
         .nav-links a:hover { color: var(--primary-color); }
         .nav-links a:hover::after { width: 100%; }
         
-        /* Nav Icons Wrapper */
         .nav-icons { display: flex; align-items: center; gap: 12px; z-index: 1002; flex-wrap: nowrap;}
         .nav-icons i { font-size: 1.1rem; cursor: pointer; color: var(--text-dark); transition: var(--transition); white-space: nowrap;}
         .nav-icons i:hover { color: var(--primary-color); }
 
-        /* --- Qidiruv --- */
-        .search-wrapper { 
-            position: relative; 
-            display: flex; 
-            align-items: center; 
-            transition: var(--transition);
-            width: 35px; /* Ikonka uchun joy */
-        }
-        .search-trigger { 
-            font-size: 1.2rem; cursor: pointer; color: var(--text-light); 
-            transition: var(--transition); z-index: 1003;
-        }
+        /* Qidiruv */
+        .search-wrapper { position: relative; display: flex; align-items: center; transition: var(--transition); width: 35px; }
+        .search-trigger { font-size: 1.2rem; cursor: pointer; color: var(--text-light); transition: var(--transition); z-index: 1003; }
         .search-trigger:hover { color: var(--primary-color); }
-        
         .search-box-input {
             position: absolute; top: 50%; left: 0; transform: translateY(-50%);
             padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 20px; 
-            outline: none; width: 0; 
-            font-family: 'Inter', sans-serif; font-size: 0.9rem; 
+            outline: none; width: 0; font-family: 'Inter', sans-serif; font-size: 0.9rem; 
             background-color: var(--input-bg); color: var(--text-dark);
-            opacity: 0; pointer-events: none;
-            transition: all 0.3s ease;
-            z-index: 1002;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 1002;
         }
-        .search-box-input.active { 
-            width: 180px; 
-            opacity: 1; 
-            pointer-events: all;
-            padding-left: 30px;
-        }
-
+        .search-box-input.active { width: 180px; opacity: 1; pointer-events: all; padding-left: 30px; }
         .cart-icon { position: relative; cursor: pointer; z-index: 1003; }
         .cart-count { position: absolute; top: -8px; right: -8px; background-color: var(--primary-color); color: #fff; font-size: 0.65rem; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
         .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-dark); z-index: 1003; }
@@ -150,6 +132,68 @@
         .feature-card i { font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem; }
         .feature-card h3 { color: var(--text-dark); font-size: 1.1rem; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 700;}
         .feature-card p { color: var(--text-light); font-size: 0.9rem; }
+
+        /* --- STYLIST ADVISOR SECTION (Camera Scanning) --- */
+        .advisor { padding: 5rem 0; background-color: var(--secondary-bg); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .advisor-container { display: flex; flex-wrap: wrap; gap: 3rem; }
+        .advisor-form { flex: 1; min-width: 300px; background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); }
+        .advisor-result { flex: 1; min-width: 300px; }
+        
+        .form-section-title { font-size: 1.3rem; color: var(--primary-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark); font-size: 0.95rem; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--input-bg); color: var(--text-dark); font-family: 'Inter', sans-serif; }
+        .full-width { grid-column: span 2; }
+
+        /* Camera Scan Styles */
+        .camera-scan-area {
+            width: 100%; height: 250px; background: #000;
+            border-radius: 12px; position: relative; overflow: hidden;
+            margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;
+            border: 2px solid #333;
+        }
+        #scanVideo { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .scan-overlay-ui {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: 2px solid rgba(0, 210, 255, 0.5); border-radius: 10px;
+            pointer-events: none; display: none;
+        }
+        .scan-line {
+            position: absolute; width: 100%; height: 3px; background: var(--tech-color);
+            box-shadow: 0 0 10px var(--tech-color);
+            top: 0; left: 0; animation: scanMove 2s infinite linear;
+        }
+        @keyframes scanMove { 0% { top: 0; } 100% { top: 100%; } }
+        .scan-result-tag {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.7); color: #fff; padding: 5px 15px; border-radius: 20px;
+            font-size: 0.9rem; display: none;
+        }
+
+        .btn-scan { width: 100%; padding: 12px; background: var(--primary-color); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-scan:hover { opacity: 0.9; }
+
+        .btn-advisor { width: 100%; padding: 14px; background-color: var(--success-color); color: #fff; border: none; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-advisor:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-advisor:disabled { background: #ccc; cursor: not-allowed; }
+
+        .result-card { background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 5px solid var(--accent-color); min-height: 300px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+        .result-content { text-align: left; }
+        .result-content h4 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--primary-color); }
+        .result-content ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .result-content li { margin-bottom: 0.5rem; color: var(--text-dark); }
+        .advice-tag { display: inline-block; padding: 4px 10px; background: var(--secondary-bg); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.85rem; margin-right: 5px; margin-bottom: 5px; }
+        
+        .recommendation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 1rem; }
+        .rec-item { border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
+        .rec-item img { width: 100%; height: 100px; object-fit: cover; }
+        .rec-info { padding: 5px; text-align: center; font-size: 0.8rem; font-weight: 600; }
+
+        /* Budget Buttons */
+        .budget-options { display: flex; gap: 10px; }
+        .budget-btn { flex: 1; padding: 10px; border: 1px solid var(--border-color); background: #fff; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; }
+        .budget-btn.selected { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
 
         /* --- Kategoriyalar --- */
         .categories { padding: 4rem 0; background-color: var(--white); }
@@ -226,101 +270,37 @@
         .overlay.active { display: block; }
 
         /* --- MODALS & ADMIN --- */
-        .modal {
-            display: none; 
-            position: fixed; z-index: 3000; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            background-color: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(5px);
-            align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.3s;
-        }
+        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
         .modal.active { display: flex; opacity: 1; }
-        .modal-content {
-            background-color: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%; max-width: 400px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transform: translateY(-20px); transition: transform 0.3s;
-        }
+        .modal-content { background-color: var(--white); padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transform: translateY(-20px); transition: transform 0.3s; }
         .modal.active .modal-content { transform: translateY(0); }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
         .form-group { margin-bottom: 1rem; }
         .form-label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark); font-size: 0.9rem; }
-        .form-input, .form-select {
-            width: 100%; padding: 10px 12px; border: 1px solid var(--border-color);
-            border-radius: 6px; background-color: var(--input-bg);
-            color: var(--text-dark); outline: none; font-size: 1rem;
-        }
+        .form-input, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; background-color: var(--input-bg); color: var(--text-dark); outline: none; font-size: 1rem; }
         .btn-full { width: 100%; padding: 12px; background-color: var(--primary-color); color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; font-size: 1rem;}
 
         /* Admin Panel */
-        .admin-panel {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--secondary-bg); z-index: 5000;
-            flex-direction: column;
-        }
+        .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--secondary-bg); z-index: 5000; flex-direction: column; }
         .admin-panel.active { display: flex; }
-        .admin-header {
-            background-color: #1a2a3a; color: #fff; padding: 1rem 2rem;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .admin-container {
-            flex: 1; display: flex; overflow: hidden;
-        }
-        .admin-sidebar {
-            width: 250px; background-color: var(--white);
-            border-right: 1px solid var(--border-color);
-            padding: 2rem 1rem; display: flex; flex-direction: column; gap: 1rem;
-        }
-        .admin-tab {
-            padding: 12px; border-radius: 6px; cursor: pointer;
-            font-weight: 600; color: var(--text-dark);
-            transition: all 0.2s; display: flex; align-items: center; gap: 10px;
-        }
-        .admin-tab:hover, .admin-tab.active-tab {
-            background-color: var(--primary-color); color: #fff;
-        }
-        .admin-content {
-            flex: 1; padding: 2rem; overflow-y: auto;
-        }
-        .admin-card {
-            background: var(--white); padding: 1.5rem;
-            border-radius: 8px; box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .data-table {
-            width: 100%; border-collapse: collapse; margin-top: 1rem;
-        }
-        .data-table th, .data-table td {
-            text-align: left; padding: 12px; border-bottom: 1px solid var(--border-color);
-        }
+        .admin-header { background-color: #1a2a3a; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .admin-container { flex: 1; display: flex; overflow: hidden; }
+        .admin-sidebar { width: 250px; background-color: var(--white); border-right: 1px solid var(--border-color); padding: 2rem 1rem; display: flex; flex-direction: column; gap: 1rem; }
+        .admin-tab { padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--text-dark); transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+        .admin-tab:hover, .admin-tab.active-tab { background-color: var(--primary-color); color: #fff; }
+        .admin-content { flex: 1; padding: 2rem; overflow-y: auto; }
+        .admin-card { background: var(--white); padding: 1.5rem; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 2rem; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border-color); }
         .data-table th { background-color: #f4f4f4; color: #333; }
-        .action-btn {
-            padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; color: #fff; margin-right: 5px;
-        }
+        .action-btn { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; color: #fff; margin-right: 5px; }
         .btn-edit { background-color: #f39c12; }
         .btn-delete { background-color: #e74c3c; }
-
-        .auth-switch {
-            text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);
-        }
-        .auth-switch span {
-            color: var(--primary-color); font-weight: 700; cursor: pointer; text-decoration: underline;
-        }
+        .auth-switch { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-light); }
+        .auth-switch span { color: var(--primary-color); font-weight: 700; cursor: pointer; text-decoration: underline; }
 
         /* Toast */
-        .toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background-color: #333; color: #fff; padding: 12px 24px;
-            border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 6000; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; gap: 10px; font-size: 0.95rem;
-        }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background-color: #333; color: #fff; padding: 12px 24px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 6000; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
         .toast.show { transform: translateX(-50%) translateY(0); }
         .toast.success { background-color: #27ae60; }
         .toast.error { background-color: #e74c3c; }
@@ -333,6 +313,8 @@
             .cart-sidebar { width: 100%; right: -100%; }
             .category-grid { grid-template-columns: repeat(2, 1fr); }
             .product-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .advisor-container { flex-direction: column; }
             .admin-sidebar { width: 70px; padding: 1rem 0.5rem; }
             .admin-tab span { display: none; }
             .admin-tab i { font-size: 1.2rem; margin: 0 auto; display: block; text-align: center; }
@@ -346,13 +328,11 @@
     <!-- Toast -->
     <div id="toast" class="toast"><i class="fas fa-info-circle"></i> <span id="toast-msg">Xabar</span></div>
 
-    <!-- Auth Modal (User & Admin Combined) -->
+    <!-- Auth Modal -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <span class="close-modal" onclick="toggleModal('authModal')">&times;</span>
-            
             <h2 style="margin-bottom: 1.5rem; text-align: center;" id="authTitle">Ro'yxatdan o'tish</h2>
-            
             <form id="authForm" onsubmit="handleAuth(event)">
                 <div class="form-group" id="userNameGroup">
                     <label class="form-label">Ism</label>
@@ -362,7 +342,6 @@
                     <label class="form-label">Telefon raqam</label>
                     <input type="tel" id="userPhone" class="form-input" placeholder="+998 90 123 45 67">
                 </div>
-
                 <div class="form-group" id="adminUserGroup" style="display:none;">
                     <label class="form-label">Login</label>
                     <input type="text" id="adminUser" class="form-input" placeholder="admin">
@@ -371,10 +350,8 @@
                     <label class="form-label">Parol</label>
                     <input type="password" id="adminPass" class="form-input" placeholder="******">
                 </div>
-
                 <button type="submit" class="btn-full" id="authBtn">Kirish</button>
             </form>
-
             <div class="auth-switch">
                 <p id="userSwitch">Admin bo'lib kirish uchun <span onclick="toggleAuthMode('admin')">bu yerga</span> bosing.</p>
                 <p id="adminSwitch" style="display:none;">Foydalanuvchi sifatida kirish uchun <span onclick="toggleAuthMode('user')">bu yerga</span> bosing.</p>
@@ -418,7 +395,6 @@
                         <h2>Mahsulotlar Boshqaruvi</h2>
                         <button class="action-btn" style="background:#27ae60;" onclick="openProductForm()">+ Yangi Mahsulot</button>
                     </div>
-
                     <div id="productFormContainer" style="display:none; background:var(--secondary-bg); padding:1.5rem; margin-bottom:1.5rem; border-radius:8px;">
                         <h4 id="formTitle" style="margin-bottom:1rem;">Yangi Mahsulot</h4>
                         <form onsubmit="handleProductSubmit(event)">
@@ -453,7 +429,6 @@
                             </div>
                         </form>
                     </div>
-
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -479,7 +454,6 @@
                         <tbody id="catsTableBody"></tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
@@ -505,16 +479,15 @@
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">Shavkatov <span>009</span></a>
-            
             <nav>
                 <ul class="nav-links">
                     <li><a href="#hero" data-i18n="nav_home">Bosh sahifa</a></li>
+                    <li><a href="#advisor" data-i18n="nav_advisor">AI Stilist</a></li>
                     <li><a href="#categories" data-i18n="nav_cat">Kategoriyalar</a></li>
                     <li><a href="#products" data-i18n="nav_prod">Mahsulotlar</a></li>
                     <li><a href="#about" data-i18n="nav_about">Biz haqimizda</a></li>
                 </ul>
             </nav>
-
             <div class="nav-icons">
                 <div class="header-controls">
                     <div class="lang-wrapper">
@@ -529,15 +502,11 @@
                         <i class="fas fa-moon"></i>
                     </button>
                 </div>
-
                 <div class="search-wrapper">
                     <input type="text" id="searchInput" class="search-box-input" placeholder="Qidirish...">
                     <i class="fas fa-search search-trigger" id="searchTrigger"></i>
                 </div>
-
-                <!-- Foydalanuvchi Kirish -->
                 <i class="far fa-user" onclick="toggleModal('authModal')" title="Kirish"></i>
-                
                 <div class="cart-icon" id="cartIcon">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count" id="cartCount">0</span>
@@ -578,6 +547,89 @@
         </div>
     </section>
 
+    <!-- AI Advisor Section (Updated with Camera Scan) -->
+    <section class="advisor" id="advisor">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem; color: var(--primary-color);" data-i18n="advisor_title">AI Stilist Skaneri</h2>
+            
+            <div class="advisor-container">
+                <div class="advisor-form">
+                    <div class="form-section-title">1. O'zingizni Skan Qiling</div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Bo'yingiz (sm)</label>
+                        <input type="number" id="advHeight" class="form-control" placeholder="Masalan: 175">
+                    </div>
+
+                    <!-- Camera Scanner (Manual skin tone removed) -->
+                    <div class="camera-scan-area">
+                        <video id="scanVideo" autoplay playsinline muted></video>
+                        <div class="scan-overlay-ui" id="scanOverlay">
+                            <div class="scan-line"></div>
+                        </div>
+                        <div class="scan-result-tag" id="scanResultTag">Skaner tayyor</div>
+                        <div id="camPlaceholder" style="color:#aaa; text-align:center;">
+                            <i class="fas fa-camera fa-2x"></i><br>Kamerani yoqing
+                        </div>
+                    </div>
+
+                    <button class="btn-scan" id="scanBtn" onclick="startCamera()">
+                        <i class="fas fa-power-off"></i> Kamerni Yoqish
+                    </button>
+                    <button class="btn-scan" id="analyzeBtn" onclick="analyzeSkinTone()" disabled style="margin-top:10px; background:var(--tech-color);">
+                        <i class="fas fa-expand-arrows-alt"></i> Teri Rangini Skan Qilish
+                    </button>
+
+                    <div class="form-section-title" style="margin-top: 1.5rem;">2. Maqsad</div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nima izlaysiz?</label>
+                        <select id="advGoal" class="form-control" onchange="toggleMatchOptions()">
+                            <option value="full">Butunlay yangi komplekt</option>
+                            <option value="match">Mening kiyimimga mos topish</option>
+                        </select>
+                    </div>
+
+                    <!-- Match Options -->
+                    <div id="matchOptions" style="display:none; background:var(--secondary-bg); padding:15px; border-radius:8px; margin-bottom:1rem;">
+                        <label class="form-label">Sizda qanday kiyim bor?</label>
+                        <select id="advMatchItem" class="form-control">
+                            <option value="shoes">Mening poyabzalim bor (Shimga ko'ylak kerak)</option>
+                            <option value="pants">Mening shimim bor (Krasovka va ko'ylak kerak)</option>
+                            <option value="shirt">Mening ko'ylagim bor (Shim va krasovka kerak)</option>
+                            <option value="suit">Mening kostyumim bor (Aksessuarlar kerak)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-section-title" style="margin-top: 1.5rem;">3. Byudjet</div>
+                    
+                    <div class="budget-options">
+                        <div class="budget-btn" id="btnCheap" onclick="setBudget('cheap')">Arzon</div>
+                        <div class="budget-btn" id="btnExp" onclick="setBudget('expensive')">Qimmat</div>
+                    </div>
+                    <p id="budgetText" style="font-size:0.85rem; margin-top:5px; color:var(--success-color); display:none;"><i class="fas fa-check"></i> Tanlandi</p>
+
+                    <button class="btn-advisor" style="margin-top: 1.5rem;" onclick="generateAdvice()">
+                        <i class="fas fa-magic"></i> Maslahat Olish
+                    </button>
+                </div>
+
+                <!-- Result Display -->
+                <div class="advisor-result">
+                    <div class="result-card">
+                        <div id="advResultPlaceholder">
+                            <i class="fas fa-user-tie" style="font-size: 4rem; color: #ddd; margin-bottom: 1rem;"></i>
+                            <h3>Kamerani yoqing va skaner qiling</h3>
+                        </div>
+                        <div id="advResultContent" style="display:none;" class="result-content">
+                            <!-- Results injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="categories" id="categories">
         <div class="container">
             <h2 style="text-align:center; font-size:2.5rem;" data-i18n="cat_title">Kategoriyalar</h2>
@@ -612,7 +664,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-grid">
@@ -647,12 +698,13 @@
     </footer>
 
     <script>
-        // --- TRANSLATION SYSTEM (Dictionary) ---
+        // --- TRANSLATION SYSTEM ---
         const translations = {
             uz: {
-                nav_home: "Bosh sahifa", nav_cat: "Kategoriyalar", nav_prod: "Mahsulotlar", nav_about: "Biz haqimizda", nav_contact: "Aloqa", nav_menu: "Bo'limlar",
+                nav_home: "Bosh sahifa", nav_advisor: "AI Stilist", nav_cat: "Kategoriyalar", nav_prod: "Mahsulotlar", nav_about: "Biz haqimizda", nav_contact: "Aloqa", nav_menu: "Bo'limlar",
                 cart_title: "Savat", cart_empty: "Savat bo'sh", total: "Jami:", order_btn: "Buyurtma berish",
                 hero_title: "Zamonaviy Erkaklar Modasi", hero_subtitle: "Sifatli import kiyimlar, 100 000 so'mdan boshlab.", hero_btn: "Xarid Qilish",
+                advisor_title: "AI Stilist Skaneri",
                 feat_1_title: "Yuqori Sifat", feat_1_desc: "Faqat import va sifatli mahsulotlar.",
                 feat_2_title: "Tez Yetkazib Berish", feat_2_desc: "Butun O'zbekiston bo'ylab 1-2 kunda.",
                 feat_3_title: "Arzon Narxlar", feat_3_desc: "Hamyonbop narxlarda, chegirmalar mavjud.",
@@ -660,104 +712,43 @@
                 prod_title: "Mahsulotlar", filter_all: "Barchasi", add_btn: "Savatga Qo'shish", buy_btn: "Buyurtma berish",
                 about_title: "Biz Haqimizda",
                 about_p1: '"Shavkatov 009" — 2023 yildan beri faoliyat yurituvchi zamonaviy erkaklar kiyimlari do\'koni.',
-                about_p2: 'Bizning vazifamiz — Turkiya, Xitoy va Rossiya kabi mamlakatlardan eng sifatli fabrika mahsulotlarini import qilib, ularni O\'zbekiston fuqarolariga hamyonbop narxlarda taqdim etishdir.',
-                about_p3: 'Bizning jamoamiz doimo bozor narxlarini kuzatib boradi va eng yaxshi mahsulotlarni tanlab oladi.',
+                about_p2: 'Bizning vazifamiz — Turkiya, Xitoy va Rossiya kabi mamlakatlardan eng sifatli fabrika mahsulotlarini',
                 stat_exp: "Yil Tajriba", stat_part: "Hamkorlar", stat_prod: "Mahsulotlar",
                 footer_desc: "Eng yaxshi erkaklar kiyimlari do'koni. Import mahsulotlari sifati va kafolati.",
-                search_ph: "Qidirish...",
-                auth_reg_title: "Ro'yxatdan o'tish",
-                auth_admin_title: "Admin Kirish",
-                user_name: "Ism",
-                user_phone: "Telefon raqam",
-                admin_login: "Login",
-                admin_pass: "Parol",
-                btn_login: "Kirish",
-                switch_to_admin: "Admin bo'lib kirish uchun bu yerga bosing.",
-                switch_to_user: "Foydalanuvchi sifatida kirish uchun bu yerga bosing."
+                search_ph: "Qidirush...",
+                auth_reg_title: "Ro'yxatdan o'tish", auth_admin_title: "Admin Kirish",
+                user_name: "Ism", user_phone: "Telefon raqam", btn_login: "Kirish"
             },
-            oz: { 
-                nav_home: "Бош саҳифа", nav_cat: "Категориялар", nav_prod: "Маҳсулотлар", nav_about: "Биз ҳақимизда", nav_contact: "Алоқа", nav_menu: "Бўлимлар",
-                cart_title: "Сават", cart_empty: "Сават бўш", total: "Жами:", order_btn: "Буюртма бериш",
-                hero_title: "Замонавий Эркаклар Модаси", hero_subtitle: "Сифатли импорт кийимлар, 100 000 сўмдан бошлаб.", hero_btn: "Харид Қилиш",
-                feat_1_title: "Юқори Сифат", feat_1_desc: "Фақат импорт ва сифатли маҳсулотлар.",
-                feat_2_title: "Тез Етказиб Бериш", feat_2_desc: "Бутун Ўзбекистон бўйлаб 1-2 кунда.",
-                feat_3_title: "Арзон Нарҳлар", feat_3_desc: "Ҳамёнбоп нарҳларда, чегирмалар мавжуд.",
-                cat_title: "Категориялар", cat_subtitle: "Ўзингизга моск бўлимни танланг",
-                prod_title: "Маҳсулотлар", filter_all: "Барчаси", add_btn: "Саватга Қўшиш", buy_btn: "Буюртма бериш",
-                about_title: "Биз Ҳақимизда",
-                about_p1: '"Shavkatov 009" — 2023 йилдан бери фаолият юритувчи замонавий эркаклар кийимлари дўкони.',
-                about_p2: 'Бизнинг вазифамиз — Туркия, Хитой ва Россия каби мамлакатлардан энг сифатли фабрика маҳсулотларини импорт қилиб, уларни Ўзбекистон фуқароларига ҳамёнбоп нарҳларда тақдим этишдир.',
-                about_p3: 'Бизнинг жамоамиз доимо бозор нарҳларини кузатиб боради ва энг яхши маҳсулотларни танлаб олади.',
-                stat_exp: "Йил Тажриба", stat_part: "Ҳамкорлар", stat_prod: "Маҳсулотлар",
-                footer_desc: "Энг яхши эркаклар кийимлари дўкони. Импорт маҳсулотлари сифати ва кафолати.",
-                search_ph: "Қидириш...",
-                auth_reg_title: "Рўйхатдан ўтиш",
-                auth_admin_title: "Админ Кириш",
-                user_name: "Исм",
-                user_phone: "Телефон рақам",
-                admin_login: "Логин",
-                admin_pass: "Парол",
-                btn_login: "Кириш",
-                switch_to_admin: "Админ бўлиб кириш учун бу ерга босинг.",
-                switch_to_user: "Фойдаланувчи сифатида кириш учун бу ерга босинг."
-            },
-            ru: { 
-                nav_home: "Главная", nav_cat: "Категории", nav_prod: "Товары", nav_about: "О нас", nav_contact: "Контакты", nav_menu: "Разделы",
-                cart_title: "Корзина", cart_empty: "Корзина пуста", total: "Итого:", order_btn: "Оформить заказ",
-                hero_title: "Современная мужская мода", hero_subtitle: "Качественная импортная одежда от 100 000 сум.", hero_btn: "Купить",
-                feat_1_title: "Высокое качество", feat_1_desc: "Только импортные и качественные товары.",
-                feat_2_title: "Быстрая доставка", feat_2_desc: "По всему Узбекистану за 1-2 дня.",
-                feat_3_title: "Доступные цены", feat_3_desc: "Доступные цены, есть скидки.",
-                cat_title: "Категории", cat_subtitle: "Выберите подходящий раздел",
-                prod_title: "Товары", filter_all: "Все", add_btn: "В корзину", buy_btn: "Купить",
-                about_title: "О нас",
-                about_p1: '"Shavkatov 009" — современный магазин мужской одежды, действующий с 2023 года.',
-                about_p2: 'Наша задача — импортировать качественные фабричные товары из Турции, Китая и России и предоставлять их жителям Узбекистана по доступным ценам.',
-                about_p3: 'Наша команда всегда следит за рыночными ценами и отбирает лучшие товары.',
-                stat_exp: "Год опыта", stat_part: "Партнеры", stat_prod: "Товары",
-                footer_desc: "Лучший магазин мужской одежды. Качество и гарантия импортных товаров.",
-                search_ph: "Поиск...",
-                auth_reg_title: "Регистрация",
-                auth_admin_title: "Вход админа",
-                user_name: "Имя",
-                user_phone: "Номер телефона",
-                admin_login: "Логин",
-                admin_pass: "Пароль",
-                btn_login: "Войти",
-                switch_to_admin: "Для входа как админ нажмите сюда.",
-                switch_to_user: "Для входа как пользователь нажмите сюда."
-            }
+            oz: { nav_home: "Бош саҳифа", nav_advisor: "AI Стилист", nav_cat: "Категориялар", nav_prod: "Маҳсулотлар", nav_about: "Биз ҳақимизда", advisor_title: "AI Стилист Сканери" },
+            ru: { nav_home: "Главная", nav_advisor: "AI Стилист", nav_cat: "Категории", nav_prod: "Товары", nav_about: "О нас", advisor_title: "AI Сканер Стилиста" }
         };
 
         function changeLanguage(lang) {
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) {
+                if (translations[lang] && translations[lang][key]) {
                     el.innerText = translations[lang][key];
                 }
             });
-
-            const searchInput = document.getElementById('searchInput');
-            if(searchInput) searchInput.placeholder = translations[lang].search_ph;
         }
 
-        // --- MA'LUMOTLAR BAZASI (Local Storage) ---
-        
+        // --- DATA INIT (Restored Original List) ---
         const initialProducts = [
-            { id: 1, name: "Elite To'q Ko'k Kostyum", price: 2100000, category: "Kostyumlar", image: "./elite.png", colors: ["#000000", "#3a4a5a"] },
-            { id: 2, name: "Zamonaviy Kumush Kostyum", price: 1850000, category: "Kostyumlar", image: "./kumush.png", colors: ["#a8a8a8", "#555555"] },
-            { id: 3, name: "Klassik Qora Shim", price: 350000, category: "Shimlar", image: "./klassikshim.png", colors: ["#000000"] },
-            { id: 4, name: "Bej Rangdagi Shim", price: 400000, category: "Shimlar", image: "./bejshim.png", colors: ["#d2b48c"] },
-            { id: 5, name: "Oq Rasmiy Ko'ylak", price: 220000, category: "Ko'ylaklar", image: "./oqkoylak.png", colors: ["#fff", "#f0f0f0"] },
-            { id: 6, name: "Ko'k Hujumli Ko'ylak", price: 180000, category: "Ko'ylaklar", image: "./kokkoylak.png", colors: ["#1a4c8c"] },
-            { id: 7, name: "Kepka", price: 110000, category: "Bosh kiyim", image: "./kepka.png", colors: ["#fff", "#000"] },
-            { id: 8, name: "Soat", price: 80000, category: "Bosh kiyim", image: "./watch.png", colors: ["#000", "#eee"] },
-            { id: 9, name: "Yuqori Sport Poyabzalar", price: 250000, category: "Soatlar", image: "./sportshoes.png", colors: ["#ff4d4d", "#333"] },
-            { id: 10, name: "Teri Klassik Tufli", price: 300000, category: "Soatlar", image: "./loropiano.png", colors: ["#5d4037"] }
+            { id: 1, name: "Elite To'q Ko'k Kostyum", price: 2100000, category: "Kostyumlar", type: "top", image: "./elite.png", colors: ["#000000", "#3a4a5a"] },
+            { id: 2, name: "Zamonaviy Kumush Kostyum", price: 1850000, category: "Kostyumlar", type: "top", image: "./kumush.png", colors: ["#a8a8a8", "#555555"] },
+            { id: 3, name: "Klassik Qora Shim", price: 350000, category: "Shimlar", type: "bottom", image: "./klassikshim.png", colors: ["#000000"] },
+            { id: 4, name: "Bej Rangdagi Shim", price: 400000, category: "Shimlar", type: "bottom", image: "./bejshim.png", colors: ["#d2b48c"] },
+            { id: 5, name: "Oq Rasmiy Ko'ylak", price: 220000, category: "Ko'ylaklar", type: "top", image: "./oqkoylak.png", colors: ["#fff", "#f0f0f0"] },
+            { id: 6, name: "Ko'k Hujumli Ko'ylak", price: 180000, category: "Ko'ylaklar", type: "top", image: "./kokkoylak.png", colors: ["#1a4c8c"] },
+            { id: 7, name: "Kepka", price: 110000, category: "Bosh kiyim", type: "acc", image: "./kepka.png", colors: ["#fff", "#000"] },
+            { id: 8, name: "Soat", price: 80000, category: "Bosh kiyim", type: "acc", image: "./watch.png", colors: ["#000", "#eee"] },
+            { id: 9, name: "Sport Krasovka (Oq)", price: 450000, category: "Poyabzallar", type: "shoes", image: "https://picsum.photos/seed/shoes1/300/300", colors: ["#ffffff"] },
+            { id: 10, name: "Teri Klassik Tufli", price: 600000, category: "Poyabzallar", type: "shoes", image: "https://picsum.photos/seed/shoes2/300/300", colors: ["#5d4037"] },
+            { id: 11, name: "Jinsoy Krasovka", price: 350000, category: "Poyabzallar", type: "shoes", image: "https://picsum.photos/seed/shoes3/300/300", colors: ["#333333"] }
         ];
 
-        const initialCategories = ["Kostyumlar", "Shimlar", "Ko'ylaklar", "Bosh kiyim", "Soatlar", "Paltolar", "Aksessuarlar"];
+        const initialCategories = ["Kostyumlar", "Shimlar", "Ko'ylaklar", "Bosh kiyim", "Poyabzallar", "Paltolar", "Aksessuarlar"];
 
         function initData() {
             if (!localStorage.getItem('products')) localStorage.setItem('products', JSON.stringify(initialProducts));
@@ -766,13 +757,184 @@
         }
         initData();
 
-        // Get/Set Helpers
         function getLS(key) { return JSON.parse(localStorage.getItem(key)); }
         function setLS(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-        // --- AUTH SYSTEM (User & Admin) ---
-        let authMode = 'user'; // 'user' or 'admin'
+        // --- CAMERA & SCAN LOGIC ---
+        let detectedSkin = "pale"; // Default fallback
+        let selectedBudget = null;
 
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('scanVideo');
+                video.srcObject = stream;
+                document.getElementById('camPlaceholder').style.display = 'none';
+                document.getElementById('scanBtn').style.display = 'none';
+                document.getElementById('analyzeBtn').disabled = false;
+                document.getElementById('analyzeBtn').style.display = 'flex';
+            } catch (err) {
+                alert("Kameraga kirish imkonsiz. Iltimos, brauzer ruxsatini bering yoki https:// da oching.");
+            }
+        }
+
+        function analyzeSkinTone() {
+            const video = document.getElementById('scanVideo');
+            const overlay = document.getElementById('scanOverlay');
+            const tag = document.getElementById('scanResultTag');
+            const btn = document.getElementById('analyzeBtn');
+
+            // UI Feedback
+            overlay.style.display = 'block';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Skan qilinmoqda...';
+
+            setTimeout(() => {
+                // Create canvas to capture frame
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Analyze center 50x50 pixels for average color
+                const p = ctx.getImageData(canvas.width/2 - 25, canvas.height/2 - 25, 50, 50).data;
+                let r=0, g=0, b=0;
+                for(let i=0; i<p.length; i+=4) { r+=p[i]; g+=p[i+1]; b+=p[i+2]; }
+                const count = p.length/4;
+                r = Math.floor(r/count); g = Math.floor(g/count); b = Math.floor(b/count);
+                
+                // Determine Skin Tone
+                const brightness = (r + g + b) / 3;
+                
+                if (brightness > 200) {
+                    detectedSkin = "pale"; // Oq
+                    tag.innerText = "Teri rangi: Oq (Pushti)";
+                } else if (brightness > 100) {
+                    detectedSkin = "tan"; // Sarg'ish
+                    tag.innerText = "Teri rangi: Sarg'ish";
+                } else {
+                    detectedSkin = "dark"; // Qora
+                    tag.innerText = "Teri rangi: Qora/Qo'ng'ir";
+                }
+
+                tag.style.display = 'block';
+                overlay.style.display = 'none'; // Stop animation
+                btn.innerHTML = '<i class="fas fa-check"></i> Skan Tugadi';
+                showToast("Teri rangi muvaffaqiyatli aniqlandi!");
+            }, 2000);
+        }
+
+        function toggleMatchOptions() {
+            const goal = document.getElementById('advGoal').value;
+            document.getElementById('matchOptions').style.display = (goal === 'match') ? 'block' : 'none';
+        }
+
+        function setBudget(type) {
+            selectedBudget = type;
+            const btnCheap = document.getElementById('btnCheap');
+            const btnExp = document.getElementById('btnExp');
+            const txt = document.getElementById('budgetText');
+            
+            btnCheap.classList.remove('selected');
+            btnExp.classList.remove('selected');
+            txt.style.display = 'none';
+
+            if(type === 'cheap') {
+                btnCheap.classList.add('selected');
+                txt.innerText = "<i class='fas fa-check'></i> Arzon variantlar tanlandi";
+            } else {
+                btnExp.classList.add('selected');
+                txt.innerText = "<i class='fas fa-check'></i> Qimmat variantlar tanlandi";
+            }
+            txt.style.display = 'block';
+        }
+
+        function generateAdvice() {
+            const height = parseInt(document.getElementById('advHeight').value);
+            const goal = document.getElementById('advGoal').value;
+            const resultDiv = document.getElementById('advResultContent');
+            const placeholder = document.getElementById('advResultPlaceholder');
+            
+            if (!height) { showToast("Iltimos, bo'yingizni kiriting!", "error"); return; }
+            if (!selectedBudget) { showToast("Iltimos, byudjetni tanlang!", "error"); return; }
+            if (document.getElementById('scanResultTag').style.display === 'none') { showToast("Iltimos, avval kamerani yoqing va skaner qiling!", "error"); return; }
+
+            let adviceHTML = `<h4><i class="fas fa-robot" style="color:var(--primary-color)"></i> AI Natijasi:</h4>`;
+            
+            // 1. Budget Filter
+            let allProducts = getLS('products');
+            let productList = [];
+            if(selectedBudget === 'cheap') {
+                productList = allProducts.filter(p => p.price < 400000 || (p.category === 'Kostyumlar' && p.price < 1500000));
+            } else {
+                productList = allProducts.filter(p => p.price > 400000);
+            }
+
+            let matchedProducts = [];
+            let matchDesc = "";
+
+            if (goal === 'full') {
+                matchDesc = `Siz uchun to'liq yangi komplekt (${selectedBudget === 'cheap' ? 'arzon' : 'premium'} klass) tavsiya etiladi. <br><small>Teri rangi: ${detectedSkin === 'pale' ? 'Oq' : detectedSkin === 'tan' ? 'Sarg\'ish' : 'Qora'}</small>`;
+                
+                const tops = productList.filter(p => p.category === 'Ko\'ylaklar' || p.category === 'Kostyumlar');
+                const bottoms = productList.filter(p => p.category === 'Shimlar');
+                const shoes = productList.filter(p => p.category === 'Poyabzallar');
+                
+                if(tops.length > 0) matchedProducts.push(tops[0]);
+                if(bottoms.length > 0) matchedProducts.push(bottoms[0]);
+                if(shoes.length > 0) matchedProducts.push(shoes[0]);
+
+            } else if (goal === 'match') {
+                const matchItem = document.getElementById('advMatchItem').value;
+                if (matchItem === 'shoes') {
+                    matchDesc = "Sizda poyabzal bor. Shunga mos shim va ko'ylak tavsiya etamiz.";
+                    const pants = productList.filter(p => p.category === 'Shimlar');
+                    const shirts = productList.filter(p => p.category === 'Ko\'ylaklar');
+                    if(pants.length > 0) matchedProducts.push(pants[0]);
+                    if(shirts.length > 0) matchedProducts.push(shirts[0]);
+                } else if (matchItem === 'pants') {
+                    matchDesc = "Sizda shim bor. Shunga mos krasovka va ko'ylak tavsiya etamiz.";
+                    const shoes = productList.filter(p => p.category === 'Poyabzallar');
+                    const shirts = productList.filter(p => p.category === 'Ko\'ylaklar');
+                    if(shoes.length > 0) matchedProducts.push(shoes[0]);
+                    if(shirts.length > 0) matchedProducts.push(shirts[0]);
+                } else if (matchItem === 'shirt') {
+                    matchDesc = "Sizda ko'ylak bor. Shunga mos shim va krasovka tavsiya etamiz.";
+                    const pants = productList.filter(p => p.category === 'Shimlar');
+                    const shoes = productList.filter(p => p.category === 'Poyabzallar');
+                    if(pants.length > 0) matchedProducts.push(pants[0]);
+                    if(shoes.length > 0) matchedProducts.push(shoes[0]);
+                }
+            }
+
+            adviceHTML += `<p>${matchDesc}</p>`;
+            adviceHTML += `<p style="font-size:0.9rem; color:#666; margin-top:5px;">Byudjet: ${selectedBudget === 'cheap' ? 'O\'rtacha' : 'Premium'}</p>`;
+            adviceHTML += `<hr style="margin: 15px 0; border:0; border-top:1px solid #eee;">`;
+            adviceHTML += `<p><b>Sizga mos tavsiyalar:</b></p>`;
+
+            // Render
+            if (matchedProducts.length > 0) {
+                adviceHTML += `<div class="recommendation-grid">`;
+                matchedProducts.forEach(p => {
+                    adviceHTML += `
+                        <div class="rec-item">
+                            <img src="${p.image}" onerror="this.src='https://picsum.photos/seed/${p.id}/100/100'">
+                            <div class="rec-info">${p.name}</div>
+                        </div>`;
+                });
+                adviceHTML += `</div>`;
+            } else {
+                adviceHTML += "<p>Bu kriteriyalar bo'yicha mahsulot topilmadi.</p>";
+            }
+
+            resultDiv.innerHTML = adviceHTML;
+            placeholder.style.display = 'none';
+            resultDiv.style.display = 'block';
+        }
+
+        // --- AUTH SYSTEM ---
+        let authMode = 'user';
         function toggleModal(id) { document.getElementById(id).classList.toggle('active'); }
 
         function toggleAuthMode(mode) {
@@ -786,17 +948,12 @@
             document.getElementById('userPhoneGroup').style.display = 'none';
             document.getElementById('adminUserGroup').style.display = 'none';
             document.getElementById('adminPassGroup').style.display = 'none';
-            document.getElementById('userName').required = false;
-            document.getElementById('userPhone').required = false;
-            document.getElementById('adminUser').required = false;
-            document.getElementById('adminPass').required = false;
-
+            
             if (mode === 'user') {
-                title.innerText = translations['uz'].auth_reg_title; // Default Uz, updated by changeLang
+                title.innerText = translations['uz'].auth_reg_title; 
                 btn.innerText = translations['uz'].btn_login;
                 userSwitch.style.display = 'block';
                 adminSwitch.style.display = 'none';
-                
                 document.getElementById('userNameGroup').style.display = 'block';
                 document.getElementById('userPhoneGroup').style.display = 'block';
                 document.getElementById('userName').required = true;
@@ -806,7 +963,6 @@
                 btn.innerText = translations['uz'].btn_login;
                 userSwitch.style.display = 'none';
                 adminSwitch.style.display = 'block';
-                
                 document.getElementById('adminUserGroup').style.display = 'block';
                 document.getElementById('adminPassGroup').style.display = 'block';
                 document.getElementById('adminUser').required = true;
@@ -828,12 +984,10 @@
                     showToast('Login yoki parol noto\'g\'ri!', 'error');
                 }
             } else {
-                // User Registration & Order
                 const name = document.getElementById('userName').value;
                 const phone = document.getElementById('userPhone').value;
                 if(!name || !phone) return showToast("Ma'lumotlarni to'ldiring", "error");
 
-                // 1. Order saqlash
                 const orders = getLS('orders');
                 const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
                 const items = cart.map(i => `${i.name} (${i.qty} dona)`).join(', ');
@@ -848,10 +1002,9 @@
                 });
                 setLS('orders', orders);
 
-                // 2. Savatni tozalash
                 cart = [];
                 updateCart();
-                toggleModal('authModal'); // Modalni yopish
+                toggleModal('authModal'); 
                 showToast('Buyurtmangiz qabul qilindi!', 'success');
             }
         }
@@ -877,19 +1030,11 @@
             adminTable.innerHTML = '';
 
             cats.forEach(cat => {
-                grid.innerHTML += `
-                    <div class="category-item" onclick="filterSelection('${cat}')">
-                        <img src="https://picsum.photos/seed/${cat}/300/200" alt="${cat}">
-                        <div class="category-overlay"><h3>${cat}</h3></div>
-                    </div>`;
+                grid.innerHTML += `<div class="category-item" onclick="filterSelection('${cat}')"><img src="https://picsum.photos/seed/${cat}/300/200" alt="${cat}"><div class="category-overlay"><h3>${cat}</h3></div></div>`;
                 filters.innerHTML += `<button class="filter-btn" onclick="filterSelection('${cat}')">${cat}</button>`;
                 pFilter.innerHTML += `<button class="filter-btn" onclick="filterSelection('${cat}')">${cat}</button>`;
                 adminSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
-                adminTable.innerHTML += `
-                    <tr>
-                        <td>${cat}</td>
-                        <td><button class="action-btn btn-delete" onclick="deleteCategory('${cat}')">O'chirish</button></td>
-                    </tr>`;
+                adminTable.innerHTML += `<tr><td>${cat}</td><td><button class="action-btn btn-delete" onclick="deleteCategory('${cat}')">O'chirish</button></td></tr>`;
             });
         }
 
@@ -938,7 +1083,6 @@
         function switchAdminTab(tab) {
             document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active-tab'));
             event.currentTarget.classList.add('active-tab');
-            
             document.getElementById('admin-orders-section').style.display = 'none';
             document.getElementById('admin-products-section').style.display = 'none';
             document.getElementById('admin-categories-section').style.display = 'none';
@@ -955,15 +1099,7 @@
             tbody.innerHTML = '';
             if(orders.length === 0) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Buyurtmalar yo\'q</td></tr>';
             orders.forEach(o => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>#${o.id.toString().slice(-4)}</td>
-                        <td>${o.user}</td>
-                        <td>${o.phone}</td>
-                        <td>${o.items}</td>
-                        <td>${o.total.toLocaleString()} so'm</td>
-                        <td>${o.date}</td>
-                    </tr>`;
+                tbody.innerHTML += `<tr><td>#${o.id.toString().slice(-4)}</td><td>${o.user}</td><td>${o.phone}</td><td>${o.items}</td><td>${o.total.toLocaleString()} so'm</td><td>${o.date}</td></tr>`;
             });
             renderAdminProductsTable();
         }
@@ -973,21 +1109,10 @@
             const tbody = document.getElementById('productsTableBody');
             tbody.innerHTML = '';
             products.forEach(p => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><img src="${p.image}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;"></td>
-                        <td>${p.name}</td>
-                        <td>${p.price.toLocaleString()}</td>
-                        <td>${p.category}</td>
-                        <td>
-                            <button class="action-btn btn-edit" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>`;
+                tbody.innerHTML += `<tr><td><img src="${p.image}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;"></td><td>${p.name}</td><td>${p.price.toLocaleString()}</td><td>${p.category}</td><td><button class="action-btn btn-edit" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="action-btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`;
             });
         }
 
-        // Product Actions
         function openProductForm() {
             document.getElementById('productFormContainer').style.display = 'block';
             document.getElementById('formTitle').innerText = 'Yangi Mahsulot';
@@ -1008,17 +1133,15 @@
             const colors = [document.getElementById('pColor1').value, document.getElementById('pColor2').value, document.getElementById('pColor3').value];
 
             let products = getLS('products');
-
             if (id) {
                 const index = products.findIndex(p => p.id == id);
-                products[index] = { ...products[index], name, price, category: cat, image: img, colors };
+                products[index] = { ...products[index], name, price, category: cat, image: img, colors, type: products[index].type }; // Preserve type
                 showToast('Mahsulot yangilandi');
             } else {
-                const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
-                products.push({ id: newId, name, price, category: cat, image: img, colors });
+                const newId = products.length ? Math.max(...products.map(p => p.id)) +1 :1;
+                products.push({ id: newId, name, price, category: cat, image: img, colors, type: 'top' }); // Default type
                 showToast('Mahsulot qo\'shildi');
             }
-
             setLS('products', products);
             closeProductForm();
             loadAdminData();
@@ -1054,7 +1177,6 @@
             if(!val) return;
             let cats = getLS('categories');
             if(cats.includes(val)) return showToast('Bu kategoriya mavjud', 'error');
-            
             cats.push(val);
             setLS('categories', cats);
             document.getElementById('newCatInput').value = '';
@@ -1077,11 +1199,9 @@
             const products = getLS('products');
             const p = products.find(p => p.id === id);
             if (!p) return;
-
             const existing = cart.find(i => i.id === id);
             if (existing) existing.qty++;
             else cart.push({ id: p.id, name: p.name, price: p.price, image: p.image, qty: 1 });
-            
             updateCart();
             showToast('Savatga qo\'shildi');
             document.getElementById('cartSidebar').classList.add('active');
@@ -1097,7 +1217,6 @@
             const container = document.getElementById('cartItemsContainer');
             const totalEl = document.getElementById('cartTotal');
             const countEl = document.getElementById('cartCount');
-            
             container.innerHTML = '';
             let total = 0;
             let count = 0;
@@ -1108,15 +1227,7 @@
                 cart.forEach(item => {
                     total += item.price * item.qty;
                     count += item.qty;
-                    container.innerHTML += `
-                        <div class="cart-item">
-                            <img src="${item.image}">
-                            <div class="cart-item-info">
-                                <div class="cart-item-title">${item.name}</div>
-                                <div class="cart-item-price">${item.price.toLocaleString()} so'm x ${item.qty}</div>
-                                <div class="remove-item" onclick="removeFromCart(${item.id})">O'chirish</div>
-                            </div>
-                        </div>`;
+                    container.innerHTML += `<div class="cart-item"><img src="${item.image}"><div class="cart-item-info"><div class="cart-item-title">${item.name}</div><div class="cart-item-price">${item.price.toLocaleString()} so'm x ${item.qty}</div><div class="remove-item" onclick="removeFromCart(${item.id})">O'chirish</div></div></div>`;
                 });
             }
             totalEl.innerText = total.toLocaleString() + " so'm";
@@ -1125,7 +1236,7 @@
 
         function openUserAuth() {
             if(cart.length === 0) return showToast("Savat bo'sh!", "error");
-            toggleAuthMode('user'); // Ensure user mode
+            toggleAuthMode('user');
             toggleModal('authModal');
         }
 
@@ -1176,34 +1287,26 @@
             icon.classList.toggle('fa-times');
         });
 
-        // Search Logic
         document.getElementById('searchTrigger').addEventListener('click', () => {
             const input = document.getElementById('searchInput');
             input.classList.toggle('active');
-            if(input.classList.contains('active')) {
-                input.focus();
-            }
+            if(input.classList.contains('active')) input.focus();
         });
         document.getElementById('searchInput').addEventListener('keyup', (e) => {
             const term = e.target.value.toLowerCase();
             const cards = document.querySelectorAll('.product-card');
             cards.forEach(card => {
                 const title = card.querySelector('.product-title').innerText.toLowerCase();
-                if(title.includes(term)) {
-                    card.classList.remove('hide');
-                } else {
-                    card.classList.add('hide');
-                }
+                if(title.includes(term)) card.classList.remove('hide');
+                else card.classList.add('hide');
             });
         });
 
-        // Init
         window.addEventListener('DOMContentLoaded', () => {
             changeLanguage('uz');
             renderCategories();
             renderProducts();
         });
-
     </script>
 </body>
 </html>
